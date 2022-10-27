@@ -1,0 +1,14 @@
+steps:            
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/stocks/logistic-regression', '.' ]
+   
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/stocks/logistic-regression']
+    
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'stocks', '--image', 
+           'us-central1-docker.pkg.dev/$PROJECT_ID/stocks/logistic-regression',
+           '--region', 'us-central1', '--platform', 'managed',
+           '--allow-unauthenticated']   
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/stocks/logistic-regression
